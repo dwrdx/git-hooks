@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# A git pre-commit hook to ask user to check if the user name and email are set up correctly
+
+user_name=$(git config --get user.name)
+user_email=$(git config --get user.email)
+
+echo "[pre-commit hook] Start!"
+
+# Allows us to read user input below, assigns stdin to keyboard
+exec < /dev/tty
+
+echo -n "Is $user_email an expected user email to you (y/n)? "
+read answer
+
+if [[ "$answer" != "y" ]];
+then
+    echo "user setup incorrect, please fix before committing"
+    exit 1
+else
+    echo "user setup correct, continue committing"
+fi
+
+echo "[pre-commit hook] End!"
+
